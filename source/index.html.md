@@ -65,15 +65,17 @@ Kittn expects for the API key to be included in all API requests to the server i
 You must replace <code>meowmeowmeow</code> with your personal API key.
 </aside>
 
-# Kittens
+# Account
 
-## Get All Kittens
+## Get All Account
 
 ```ruby
-require 'kittn'
+Omise.api_key = "skey_test_4xs8breq3htbkj03d2x"
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
+account = Omise::Account.retrieve
+
+# After retrieving it, the account can be refreshed:
+account.reload
 ```
 
 ```python
@@ -84,53 +86,46 @@ api.kittens.get()
 ```
 
 ```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
+curl https://api.omise.co/account \
+  -u skey_test_4xs8breq3htbkj03d2x:
 ```
 
 ```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
+Account account = client.account().get();
+System.out.printf("account id: %s\n", account.getId());
 ```
 
 > The above command returns JSON structured like this:
 
 ```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
+{
+  "object": "account",
+  "id": "acct_4x7d2wtqnj2f4klrfsc",
+  "location": "/account",
+  "email": "gedeon@gedeon.be",
+  "created": "2015-05-20T04:57:36Z"
+}
 ```
 
 This endpoint retrieves all kittens.
 
 ### HTTP Request
 
-`GET http://example.com/api/kittens`
+`GET https://api.omise.co/account`
 
 ### Query Parameters
 
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
+Parameter | Type      | Description
+--------- | --------- | -----------
+object    | string    | The string account.
+id        | object_id | The ACCOUNT_ID.
+location  | string    | Path to retrieve the account.
+email     | string    | Registration email.
+created   | datetime  | Creation date of the account in ISO 8601 format.
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
+
+<aside class="notice">
+It may be interesting to note that both Test and Live keys will return the same account.
 </aside>
 
 ## Get a Specific Kitten
@@ -186,4 +181,3 @@ This endpoint retrieves a specific kitten.
 Parameter | Description
 --------- | -----------
 ID | The ID of the kitten to retrieve
-
